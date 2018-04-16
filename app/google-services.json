@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "283682745837",
+    "firebase_url": "https://guesstheimg.firebaseio.com",
+    "project_id": "guesstheimg",
+    "storage_bucket": "guesstheimg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283682745837:android:640af0f11392bff9",
+        "android_client_info": {
+          "package_name": "com.agnt45.guesstheimage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "283682745837-f763gt5d4kt61aijs6kisu1anlgg5amf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.agnt45.guesstheimage",
+            "certificate_hash": "ac627a8a6e54ced01f15f30b5d58c92822916f2f"
+          }
+        },
+        {
+          "client_id": "283682745837-18dp3tv202aqj4q43qm9cnesrm814tbd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq9fIa78A9TkfRhbOV8-OgsULHZ8HDnlk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "283682745837-18dp3tv202aqj4q43qm9cnesrm814tbd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
