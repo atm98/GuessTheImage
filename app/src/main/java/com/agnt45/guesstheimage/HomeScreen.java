@@ -1,10 +1,12 @@
 package com.agnt45.guesstheimage;
 
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -90,14 +92,24 @@ public class HomeScreen extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Class fragmentClass=null;
+        Fragment fragment = null;
         if(id==R.id.action_Logout){
             FirebaseAuth.getInstance().signOut();
         }
         else if (id==R.id.action_settings){
+            fragmentClass = Home_Fragment.class;
 
         }
-
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.frlayout, fragment).commit();
 
         return super.onOptionsItemSelected(item);
     }
@@ -106,18 +118,27 @@ public class HomeScreen extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        Class fragmentClass=null;
+        Fragment fragment = null;
+
         int id = item.getItemId();
 
         if(id==R.id.nav_Home){
 
         }
         else if(id==R.id.nav_account){
-
+            fragmentClass = MyAccount_Fragment.class;
         }
         else if(id==R.id.nav_gameHistory){
-
+            fragmentClass = GameHistory_Fragment.class;
         }
-
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.frlayout, fragment).commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
