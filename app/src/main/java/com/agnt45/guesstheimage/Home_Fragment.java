@@ -13,6 +13,7 @@ import android.view.ViewGroup;
  */
 public class Home_Fragment extends Fragment {
 
+    private View view;
 
     public Home_Fragment() {
         // Required empty public constructor
@@ -23,7 +24,8 @@ public class Home_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_, container, false);
+        view = inflater.inflate(R.layout.fragment_home_, container, false);
+        return view;
     }
 
 }

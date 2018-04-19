@@ -37,15 +37,24 @@ public class LoginScreen extends AppCompatActivity {
     GoogleSignInOptions gso;
     GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth.AuthStateListener authStateListener;
+    String uname,uemail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
+        mAuth = FirebaseAuth.getInstance();
         authStateListener =new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Intent Login = new Intent(LoginScreen.this,HomeScreen.class);
-                startActivity(Login);
+                if(firebaseAuth.getCurrentUser()!=null) {
+                    Intent Login = new Intent(LoginScreen.this, HomeScreen.class);
+                    uname=firebaseAuth.getCurrentUser().getDisplayName();
+                    uemail=firebaseAuth.getCurrentUser().getEmail();
+                    Login.putExtra("UserName:",uname);
+                    Login.putExtra("UserEmail:",uemail);
+                    //Toast.makeText(LoginScreen.this,uname+":"+uemail,Toast.LENGTH_LONG).show();
+                    startActivity(Login);
+                }
             }
         };
         signInButton = findViewById(R.id.GSigninButton);
@@ -55,9 +64,10 @@ public class LoginScreen extends AppCompatActivity {
                 signIn();
             }
         });
-        mAuth = FirebaseAuth.getInstance();
+
         gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
@@ -82,7 +92,7 @@ public class LoginScreen extends AppCompatActivity {
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -91,11 +101,18 @@ public class LoginScreen extends AppCompatActivity {
                         if(task.isSuccessful()){
                             Log.d(TAG, "signInWithCredential:success");
 
+
                         }else{
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginScreen.this,"LOGIN FAILED",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onStart() {
+        mAuth.addAuthStateListener(authStateListener);
+        super.onStart();
     }
 }

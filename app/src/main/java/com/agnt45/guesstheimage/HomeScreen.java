@@ -17,9 +17,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
@@ -28,6 +32,7 @@ public class HomeScreen extends AppCompatActivity
     private String Uname,Uemail;
     private FirebaseAuth.AuthStateListener authStateListener;
     private TextView UserName,UserEmail;
+    private ImageView userpic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,20 +41,21 @@ public class HomeScreen extends AppCompatActivity
         setSupportActionBar(toolbar);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        UserName = navigationView.findViewById(R.id.uname);
-        UserEmail = navigationView.findViewById(R.id.uemail);
+        View header = navigationView.getHeaderView(0);
+        UserName = header.findViewById(R.id.uname);
+        UserEmail = header.findViewById(R.id.uemail);
+        userpic = header.findViewById(R.id.uPic);
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser()!=null){
-            Uname = mAuth.getCurrentUser().getDisplayName();
-            Uemail = mAuth.getCurrentUser().getEmail();
-            UserName.setText(Uname);
-            UserEmail.setText(Uemail);
+        FirebaseUser user = mAuth.getCurrentUser();
+        Intent current = this.getIntent();
+        Uname = current.getStringExtra("UserName:");
+        Uemail = current.getStringExtra("UserEmail:");
+        if (user != null) {
+            Picasso.get().load(user.getPhotoUrl()).into(userpic);
         }
-        else{
-            UserName.setText("");
-            UserEmail.setText("");
-        }
-
+        Toast.makeText(HomeScreen.this,Uname+":"+Uemail,Toast.LENGTH_LONG).show();
+        UserName.setText(Uname);
+        UserEmail.setText(Uemail);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
